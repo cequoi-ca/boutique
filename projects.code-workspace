@@ -1,0 +1,31 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"sqltools.connections": [
+			{
+				"previewLimit": 50,
+				"server": "127.0.0.1",
+				"port": 5432,
+				"driver": "PostgreSQL",
+				"name": "cartservice",
+				"database": "cartdb",
+				"username": "user",
+				"password": "password"
+			},
+			{
+				"previewLimit": 50,
+				"server": "localhost",
+				"port": 5432,
+				"driver": "PostgreSQL",
+				"name": "boutique",
+				"database": "boutique",
+				"username": "postgres",
+				"password": "postgres"
+			}
+		]
+	}
+}
