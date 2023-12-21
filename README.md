@@ -1,5 +1,10 @@
 # Sample online Store
 
+## Checkout repo
+```
+git clone git@github.com:cequoi-ca/boutique.git
+```
+
 # Services
 
 ## Cart Service
