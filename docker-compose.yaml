@@ -2,6 +2,16 @@
 
 version: '3.8'
 services:
+  product-catalogue-service:
+    build:
+      context: ./product-catalog-service
+      dockerfile: Dockerfile
+    ports:
+      - "8090:8080"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/boutique
   cart-service:
     build:
       context: ./cart-service
