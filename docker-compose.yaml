@@ -45,10 +45,10 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: ~/database/data
+      device: ./database/data
   db_init:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: ~/database/sql
+      device: ./database/sql
