@@ -7,7 +7,7 @@
 			"path": "cart-service"
 		},
 		{
-			"path": "project-catalog-service"
+			"path": "product-catalog-service"
 		}
 	],
 	"settings": {
