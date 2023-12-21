@@ -2,6 +2,12 @@
 	"folders": [
 		{
 			"path": "."
+		},
+		{
+			"path": "cart-service"
+		},
+		{
+			"path": "project-catalog-service"
 		}
 	],
 	"settings": {
