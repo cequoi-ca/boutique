@@ -32,4 +32,4 @@ async def search_products(desc: str = Query(..., min_length=3), db: Session = De
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8090)
+    uvicorn.run(app, host="0.0.0.0", port=8080)
