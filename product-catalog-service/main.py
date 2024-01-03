@@ -18,8 +18,8 @@ def get_db():
 
 
 @app.get("/products/read")
-async def read_product(id: int, db: Session = Depends(get_db)):
-    product = db.query(Product).filter(Product.id == id).first()
+async def read_product(id: str, db: Session = Depends(get_db)):
+    product = db.query(Products).filter(Products.id == id).first()
     if product is None:
         raise HTTPException(status_code=404, detail="Product not found")
     return product
@@ -27,9 +27,9 @@ async def read_product(id: int, db: Session = Depends(get_db)):
 
 @app.get("/products/search")
 async def search_products(desc: str = Query(..., min_length=3), db: Session = Depends(get_db)):
-    products = db.query(Product).filter(Product.description.ilike(f"%{desc}%")).all()
+    products = db.query(Product).filter(Product.description.like(f"%{desc}%")).all()
     return products
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8080)
+    uvicorn.run(app, host="0.0.0.0", port=8090)
