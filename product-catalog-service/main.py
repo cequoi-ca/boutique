@@ -1,27 +1,35 @@
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, Depends, HTTPException, Query
 from typing import List, Optional
-import json
+from sqlalchemy.orm import Session
+from sqlalchemy.exc import NoResultFound
+from db import SessionLocal, engine
+from models import Products 
+
 
 app = FastAPI()
 
-# Load product data from products.json
-with open('products.json', 'r') as f:
-    products_data = json.load(f)
 
-products = products_data['products']
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
-@app.get("/products/search")
-async def search_products(desc: str = Query(..., description="Product description to search for")):
-    filtered_products = [product for product in products if desc.lower() in product['description'].lower()]
-    return filtered_products
 
 @app.get("/products/read")
-async def read_product(id: str = Query(..., description="Product ID to read")):
-    for product in products:
-        if product['id'] == id:
-            return product
-    raise HTTPException(status_code=404, detail="Product not found")
+async def read_product(id: int, db: Session = Depends(get_db)):
+    product = db.query(Product).filter(Product.id == id).first()
+    if product is None:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return product
+
+
+@app.get("/products/search")
+async def search_products(desc: str = Query(..., min_length=3), db: Session = Depends(get_db)):
+    products = db.query(Product).filter(Product.description.ilike(f"%{desc}%")).all()
+    return products
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8090)
+    uvicorn.run(app, host="0.0.0.0", port=8080)

@@ -2,16 +2,16 @@
 
 version: '3.8'
 services:
-  product-catalogue-service:
-    build:
-      context: ./product-catalog-service
-      dockerfile: Dockerfile
-    ports:
-      - "8090:8080"
-    depends_on:
-      - db
-    environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/boutique
+  # product-catalogue-service:
+  #   build:
+  #     context: ./product-catalog-service
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "8090:8080"
+  #   depends_on:
+  #     - db
+  #   environment:
+  #     - DATABASE_URL=postgresql://postgres:postgres@db:5432/boutique
   cart-service:
     build:
       context: ./cart-service
@@ -22,6 +22,18 @@ services:
       - db
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/boutique
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@localhost.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    # volumes:
+    #  - ./postgres_data/admin/:/var/lib/pgadmin
+    ports:
+      - "5005:80"
+    depends_on:
+      - db
   db:
     image: postgres:16-alpine
     environment:
@@ -29,8 +41,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: boutique
     volumes:
-      - db_init:/docker-entrypoint-initdb.d/ 
-      - postgres_data:/var/lib/postgresql/data
+      - ./postgres_data/data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     healthcheck:
@@ -38,17 +49,3 @@ services:
       interval: 5s
       timeout: 5s
       retries: 3
-
-volumes:
-  postgres_data:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ./database/data
-  db_init:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ./database/sql
